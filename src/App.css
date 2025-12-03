@@ -108,3 +108,102 @@ h2 {
     padding: 80px 15px;
   }
 }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Prevent font scaling issues on mobile */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Better touch targets */
+button, a, input, select {
+  -webkit-tap-highlight-color: transparent;
+}
+/* ==================== GLOBAL CAT LAYOUT (use on every page) ==================== */
+.page-container {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Cat on top only on mobile */
+.cat-mobile {
+  display: none;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* Main grid – desktop = side by side, mobile = stacked */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1400px;
+  width: 100%;
+  align-items: start;
+}
+
+/* Desktop cat (right side) */
+.cat-desktop {
+  display: flex;
+  justify-content: center;
+}
+
+/* Shared cat photo style */
+.cat-photo {
+  width: 420px;
+  height: 520px;
+  object-fit: cover;
+  border-radius: 40px;
+  border: 10px solid rgba(15, 12, 41, 0.9);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s ease;
+}
+
+.cat-photo:hover {
+  transform: scale(1.05);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 992px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .cat-mobile {
+    display: block;
+  }
+
+  .cat-desktop {
+    display: none;
+  }
+
+  .cat-photo {
+    width: 340px;
+    height: 420px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cat-photo {
+    width: 280px;
+    height: 350px;
+  }
+
+  .page-container {
+    padding: 1.5rem 1rem;
+  }
+}

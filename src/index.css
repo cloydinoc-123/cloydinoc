@@ -66,3 +66,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* ====== SUPER SMALL RESPONSIVE FIX (NO CRASH, WORKS EVERYWHERE) ====== */
+* { box-sizing: border-box; }
+html, body, #root { 
+  margin: 0; 
+  padding: 0; 
+  width: 100%; 
+  overflow-x: hidden; 
+}
+
+/* Fix text size on mobile */
+html { -webkit-text-size-adjust: 100%; }
+
+/* Make all your pages responsive */
+.page-container,
+.about-page,
+.skills-page,
+.projects-page,
+.scheduling-page,
+.contact-section,
+.home-section {
+  padding: 1.5rem 1rem;
+}
+
+@media (max-width: 992px) {
+  h1 { font-size: 2.8rem !important; }
+  h2 { font-size: 1.8rem !important; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 2.3rem !important; }
+  .glass-card { padding: 1.5rem !important; }
+}

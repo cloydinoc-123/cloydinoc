@@ -4,17 +4,17 @@ import "./Skills.css";
 export default function Skills() {
   const skills = [
     { name: "Figma", percent: 40, icon: "figma" },
-    { name: "UI/UX Design", percent: 45, icon: "ux" },
+    { name: "UI/UX Design", percent: 25, icon: "ux" },
     { name: "Tailwind CSS", percent: 40, icon: "tw" },
     { name: "JavaScript", percent: 50, icon: "js" },
-    { name: "Next.js", percent: 60, icon: "next" },
-    { name: "Express", percent: 30, icon: "ex" },
-    { name: "PHP", percent: 30, icon: "php" },
-    { name: "React", percent: 70, icon: "react" },
+    { name: "Next.js", percent: 40, icon: "next" },
+    { name: "Express", percent: 10, icon: "ex" },
+    { name: "PHP", percent: 20, icon: "php" },
+    { name: "React", percent: 60, icon: "react" },
   ];
 
   return (
-    <div className="skills-page">
+    <div className="page-container">
       <div className="skills-header">
         <h1 className="skills-title">My Skills</h1>
         <p className="skills-subtitle">Tools & technologies I use every day</p>

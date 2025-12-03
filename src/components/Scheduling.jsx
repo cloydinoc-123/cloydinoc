@@ -1,12 +1,10 @@
-// src/pages/Scheduling.jsx
-import { useState } from "react";
+import React, { useState } from "react";
 import "./Scheduling.css";
 
 export default function Scheduling() {
   const [processes, setProcesses] = useState([
     { name: "P1", arrival: 0, burst: 0 },
   ]);
-
   const [results, setResults] = useState(null);
   const [gantt, setGantt] = useState([]);
 
@@ -17,7 +15,7 @@ export default function Scheduling() {
 
   const updateProcess = (index, field, value) => {
     const updated = [...processes];
-    updated[index][field] = Number(value);
+    updated[index][field] = Number(value) || 0;
     setProcesses(updated);
   };
 
@@ -28,36 +26,22 @@ export default function Scheduling() {
       .sort((a, b) => a.arrival - b.arrival)
       .map((p) => {
         if (time < p.arrival) time = p.arrival;
-
         const start = time;
         const finish = time + p.burst;
-
-        ganttData.push({
-          name: p.name,
-          start,
-          end: finish,
-        });
-
-        const CT = finish;
-        const TAT = CT - p.arrival;
-        const WT = TAT - p.burst;
-
+        ganttData.push({ name: p.name, start, end: finish });
         time = finish;
-
-        return { ...p, CT, TAT, WT };
+        return {
+          ...p,
+          CT: finish,
+          TAT: finish - p.arrival,
+          WT: finish - p.arrival - p.burst,
+        };
       });
 
-    const avgTAT =
-      computed.reduce((sum, p) => sum + p.TAT, 0) / computed.length || 0;
-    const avgWT =
-      computed.reduce((sum, p) => sum + p.WT, 0) / computed.length || 0;
+    const avgTAT = (computed.reduce((s, p) => s + p.TAT, 0) / computed.length || 0).toFixed(2);
+    const avgWT = (computed.reduce((s, p) => s + p.WT, 0) / computed.length || 0).toFixed(2);
 
-    setResults({
-      processes: computed,
-      avgTAT: avgTAT.toFixed(2),
-      avgWT: avgWT.toFixed(2),
-    });
-
+    setResults({ processes: computed, avgTAT, avgWT });
     setGantt(ganttData);
   };
 
@@ -68,130 +52,138 @@ export default function Scheduling() {
   };
 
   return (
-    <div className="scheduling-container">
+    <div className="page-container">
 
-      <h2 className="page-title">FCFS Scheduling</h2>
-
-      {/* INPUT CARD */}
-      <div className="input-card">
-        <h3>Input Processes</h3>
-
-        <table className="input-table">
-          <thead>
-            <tr>
-              <th>Process</th>
-              <th>Arrival Time</th>
-              <th>Burst Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {processes.map((p, index) => (
-              <tr key={index}>
-                <td>{p.name}</td>
-                <td>
-                  <input
-                    type="number"
-                    value={p.arrival}
-                    onChange={(e) =>
-                      updateProcess(index, "arrival", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={p.burst}
-                    onChange={(e) =>
-                      updateProcess(index, "burst", e.target.value)
-                    }
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <button className="add-btn" onClick={addProcess}>
-          + Add Process
-        </button>
-
-        <div className="action-buttons">
-          <button className="visualize-btn" onClick={calculateFCFS}>
-            ▶ Visualize
-          </button>
-          <button className="reset-btn" onClick={reset}>
-            ⟳ Reset
-          </button>
+      {/* CAT AT THE TOP ON MOBILE */}
+      <div className="cat-mobile-top">
+        <div className="cat-container">
+          <div className="glow-effect"></div>
+          <img src="/catkun.jpg" alt="Cloyd's Cat" className="cat-photo" />
         </div>
       </div>
 
-      {/* GANTT SECTION */}
-      {gantt.length > 0 && (
-        <div className="gantt-card">
-          <h3>Gantt Chart</h3>
+      {/* MAIN LAYOUT: Desktop = side-by-side, Mobile = content only (cat already shown above) */}
+      <div className="scheduling-hero-grid">
 
-          <div className="gantt-bar">
-            {gantt.map((g, index) => (
-              <div
-                key={index}
-                className={`gantt-block color-${g.name}`}
-                style={{ width: `${(g.end - g.start) * 40}px` }}
-              >
-                <span>{g.name}</span>
-                <small>
-                  {g.start} → {g.end}
-                </small>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+        {/* Left: All Content */}
+        <div className="scheduling-content">
+          <div className="scheduling-wrapper">
 
-      {/* RESULTS */}
-      {results && (
-        <div className="results-grid">
+            <h1 className="page-title">FCFS Scheduling Algorithm</h1>
 
-          <div className="processes-card">
-            <h3>Processes</h3>
-
-            <table className="results-table">
-              <thead>
-                <tr>
-                  <th>P</th>
-                  <th>AT</th>
-                  <th>BT</th>
-                  <th>CT</th>
-                  <th>TAT</th>
-                  <th>WT</th>
-                </tr>
-              </thead>
-              <tbody>
-                {results.processes.map((p, index) => (
-                  <tr key={index}>
-                    <td>{p.name}</td>
-                    <td>{p.arrival}</td>
-                    <td>{p.burst}</td>
-                    <td>{p.CT}</td>
-                    <td>{p.TAT}</td>
-                    <td>{p.WT}</td>
-                  </tr>
+            {/* Input Section */}
+            <div className="glass-card input-section">
+              <h2>Input Processes</h2>
+              <div className="process-table">
+                {processes.map((p, i) => (
+                  <div key={i} className="process-row">
+                    <span className="process-name">{p.name}</span>
+                    <input
+                      type="number"
+                      value={p.arrival}
+                      onChange={(e) => updateProcess(i, "arrival", e.target.value)}
+                      placeholder="Arrival"
+                    />
+                    <input
+                      type="number"
+                      value={p.burst}
+                      onChange={(e) => updateProcess(i, "burst", e.target.value)}
+                      placeholder="Burst"
+                    />
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+
+              <button className="add-btn" onClick={addProcess}>
+                + Add Process
+              </button>
+
+              <div className="action-buttons">
+                <button className="visualize-btn" onClick={calculateFCFS}>
+                  Visualize
+                </button>
+                <button className="reset-btn" onClick={reset}>
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            {/* Gantt Chart */}
+            {gantt.length > 0 && (
+              <div className="glass-card gantt-section">
+                <h2>Gantt Chart</h2>
+                <div className="gantt-chart">
+                  {gantt.map((block, i) => (
+                    <div
+                      key={i}
+                      className={`gantt-block p${block.name}`}
+                      style={{ width: `${(block.end - block.start) * 50}px` }}
+                    >
+                      <div className="gantt-label">{block.name}</div>
+                      <div className="gantt-time">{block.start} → {block.end}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Results */}
+            {results && (
+              <div className="results-container">
+                <div className="glass-card results-table-card">
+                  <h2>Process Details</h2>
+                  <table className="results-table">
+                    <thead>
+                      <tr>
+                        <th>Process</th>
+                        <th>AT</th>
+                        <th>BT</th>
+                        <th>CT</th>
+                        <th>TAT</th>
+                        <th>WT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.processes.map((p) => (
+                        <tr key={p.name}>
+                          <td>{p.name}</td>
+                          <td>{p.arrival}</td>
+                          <td>{p.burst}</td>
+                          <td>{p.CT}</td>
+                          <td>{p.TAT}</td>
+                          <td>{p.WT}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="glass-card avg-card">
+                  <h2>Averages</h2>
+                  <div className="avg-item">
+                    <span>Turnaround Time</span>
+                    <strong>{results.avgTAT}</strong>
+                  </div>
+                  <div className="avg-item">
+                    <span>Waiting Time</span>
+                    <strong>{results.avgWT}</strong>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
-
-          <div className="average-card">
-            <h3>Average Times</h3>
-
-            <p className="avg-title">Turnaround Time</p>
-            <p className="avg-number">{results.avgTAT}</p>
-
-            <p className="avg-title">Waiting Time</p>
-            <p className="avg-number">{results.avgWT}</p>
-          </div>
-
         </div>
-      )}
+
+        {/* Right: Cat (Desktop Only) */}
+        <div className="cat-desktop">
+          <div className="cat-container">
+            <div className="glow-effect"></div>
+            <img src="/catkun.jpg" alt="Cloyd's Cat" className="cat-photo" />
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
