@@ -1,12 +1,12 @@
 import React from "react";
-import "./Home.css";  // Or home.css if lowercase
+import "./Home.css";
 
 export default function Home() {
   return (
-    <div className="page-container">  {/* NEW: This wrapper fixes the layout */}
+    <div className="page-container">
       
-      {/* Main Hero Section */}
-      <main className="home-section">  {/* Changed to <main> for semantics */}
+      {/* Main Content */}
+      <main className="main-content">
         <div className="home-container">
           <div className="home-grid">
             
@@ -24,19 +24,19 @@ export default function Home() {
 
             {/* Right Photo */}
             <div className="photo-wrapper">
-              <div className="glow-effect"></div>  {/* Assuming you have this for glow */}
+              <div className="glow-effect"></div>
               <img src="/3.jpg" alt="Cloyd Inoc" className="profile-photo" />
             </div>
-            
+
           </div>
         </div>
       </main>
 
-      {/* Footer – Now sticks to bottom */}
+      {/* Footer */}
       <footer className="site-footer">
         <div className="social-icons">
           <a
-            href="https://facebook.com/cloydinoc"  // Your real FB link
+            href="https://facebook.com/cloydinoc"
             target="_blank"
             rel="noopener noreferrer"
             className="icon facebook"
@@ -44,7 +44,7 @@ export default function Home() {
             <i className="fab fa-facebook-f"></i>
           </a>
           <a
-            href="https://github.com/cloydinoc-123"  // Your real GitHub link
+            href="https://github.com/cloydinoc-123"
             target="_blank"
             rel="noopener noreferrer"
             className="icon github"
@@ -54,7 +54,7 @@ export default function Home() {
         </div>
         <p className="copyright">© 2025 Cloyd Inoc. All rights reserved.</p>
       </footer>
-      
+
     </div>
   );
 }
