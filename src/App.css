@@ -1,7 +1,5 @@
 /* src/index.css - Paste ALL of this */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 /* Custom fixes for your exact design */
 body {

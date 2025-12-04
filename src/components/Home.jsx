@@ -15,7 +15,7 @@ export default function Home() {
               <h2 className="hi-text">Hi, I am</h2>
               <h1 className="name">Cloyd Inoc</h1>
               <h3 className="title">
-                Web Designer &<br />Developer
+                Web Designer <br />
               </h3>
               <p className="description">
                 I craft visually captivating and user-friendly digital experiences by combining creativity, sleek UI design, and seamless interactions that engage and inspire.
